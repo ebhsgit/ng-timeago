@@ -31,10 +31,10 @@
   "scripts": {
     "packagr": "ng-packagr -p package.json"
   },
+  "typings": "ngx-timeago.d.ts",
   "main": "bundles/ngx-timeago.umd.js",
   "module": "esm5/ngx-timeago.js",
   "es2015": "esm2015/ngx-timeago.js",
-  "typings": "ngx-timeago.d.ts",
   "metadata": "ngx-timeago.metadata.json",
   "dependencies": {
     "tslib": "^1.7.1"
