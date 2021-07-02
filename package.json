@@ -35,9 +35,9 @@
     "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
     "keepLifecycleScripts": true,
     "lib": {
-      "entryFile": "src/public_api.ts"
+      "entryFile": "src/index.ts"
     },
     "dest": "./dist"
   },
-  "typings": "./dist/ngx-timeago.d.ts"
+  "typings": "./dist/index.d.ts"
 }
