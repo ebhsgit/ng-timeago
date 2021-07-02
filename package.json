@@ -23,5 +23,13 @@
   "devDependencies": {
     "@angular/core": ">=5.2.11",
     "rxjs": ">=5.5.11"
+  },
+  "ngPackage": {
+    "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+    "keepLifecycleScripts": true,
+    "lib": {
+      "entryFile": "src/public_api.ts"
+    },
+    "dest": "../dist/ngx-timeago"
   }
 }
