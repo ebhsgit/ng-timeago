@@ -38,5 +38,6 @@
       "entryFile": "src/public_api.ts"
     },
     "dest": "./dist"
-  }
+  },
+  "typings": "./dist/ngx-timeago.d.ts"
 }
