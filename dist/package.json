@@ -25,14 +25,17 @@
     "@angular/compiler-cli": "5.2.11",
     "@angular/core": ">=5.2.11",
     "ng-packagr": "^2.0.0",
+    "npm-run-all": "^4.1.2",
     "rxjs": ">=5.5.11",
     "typescript": "~2.6.2"
   },
   "scripts": {
-    "packagr": "ng-packagr -p package.json"
+    "build": "run-s build:packagr build:ts",
+    "build:packagr": "ng-packagr -p package.json",
+    "build:ts": "tsc && ngc"
   },
-  "typings": "ngx-timeago.d.ts",
   "main": "bundles/ngx-timeago.umd.js",
+  "typings": "ngx-timeago.d.ts",
   "module": "esm5/ngx-timeago.js",
   "es2015": "esm2015/ngx-timeago.js",
   "metadata": "ngx-timeago.metadata.json",
