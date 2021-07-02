@@ -1,0 +1,27 @@
+{
+  "name": "ngx-timeago",
+  "description": "Live updating timestamps in Angular 5+.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ihym/ngx-timeago.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ihym/ngx-timeago/issues"
+  },
+  "author": "Vasilis Diakomanolis <b.diakomanolis@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "angular5",
+    "timeago",
+    "ngx-timeago"
+  ],
+  "peerdependencies": {
+    "@angular/core": ">=5.2.11",
+    "rxjs": ">=5.5.11"
+  },
+  "devDependencies": {
+    "@angular/core": ">=5.2.11",
+    "rxjs": ">=5.5.11"
+  }
+}
