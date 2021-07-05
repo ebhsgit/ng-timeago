@@ -39,6 +39,9 @@
   "module": "esm5/ngx-timeago.js",
   "es2015": "esm2015/ngx-timeago.js",
   "metadata": "ngx-timeago.metadata.json",
+  "files": [
+    "/dist"
+  ],
   "dependencies": {
     "tslib": "^1.7.1"
   }

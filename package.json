@@ -42,8 +42,11 @@
     },
     "dest": "./dist"
   },
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "main": "./dist/bundles/ngx-timeago.umd.js",
+  "typings": "./dist/ngx-timeago.d.ts",
+  "module": "./dist/esm5/ngx-timeago.js",
+  "es2015": "./dist/esm2015/ngx-timeago.js",
+  "metadata": "./dist/ngx-timeago.metadata.json",
   "files": [
     "/dist"
   ]
