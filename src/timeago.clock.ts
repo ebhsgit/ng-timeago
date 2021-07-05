@@ -6,12 +6,12 @@ import { expand, skip } from 'rxjs/operators';
 import { DAY, HOUR, MINUTE } from './util';
 
 export abstract class TimeagoClock {
-  abstract tick(then: number, ticker?: TickerOverride): Observable<any>;
+  abstract tick(then: number): Observable<any>;
 }
 
 @Injectable()
 export class TimeagoDefaultClock extends TimeagoClock {
-  tick(then: number, ticker?: TickerOverride): Observable<any> {
+  tick(then: number): Observable<any> {
     return of(0)
       .pipe(
         expand(() => {
@@ -20,11 +20,11 @@ export class TimeagoDefaultClock extends TimeagoClock {
 
           const period =
             seconds < MINUTE
-              ? ticker?.underMin || 1000
+              ? 1000
               : seconds < HOUR
-                ? ticker?.underHour || 1000 * MINUTE
+                ? 1000 * MINUTE
                 : seconds < DAY
-                  ? ticker?.underDay || 1000 * HOUR
+                  ? 1000 * HOUR
                   : 0;
 
           return period ? timer(period) : Observable.empty<never>();
@@ -32,10 +32,4 @@ export class TimeagoDefaultClock extends TimeagoClock {
         skip(1)
       );
   }
-}
-
-export interface TickerOverride {
-  underMin?: number,
-  underHour?: number,
-  underDay?: number,
 }
