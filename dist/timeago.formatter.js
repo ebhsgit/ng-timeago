@@ -1,13 +1,23 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const core_1 = require("@angular/core");
-const timeago_intl_1 = require("./timeago.intl");
-const util_1 = require("./util");
-const defaultFormattter = function (then) {
-    const now = Date.now();
-    const seconds = Math.round(Math.abs(now - then) / 1000);
-    const suffix = then < now ? 'ago' : 'from now';
-    const [value, unit] = seconds < util_1.MINUTE
+var core_1 = require("@angular/core");
+var timeago_intl_1 = require("./timeago.intl");
+var util_1 = require("./util");
+var defaultFormattter = function (then) {
+    var now = Date.now();
+    var seconds = Math.round(Math.abs(now - then) / 1000);
+    var suffix = then < now ? 'ago' : 'from now';
+    var _a = seconds < util_1.MINUTE
         ? [Math.round(seconds), 'second']
         : seconds < util_1.HOUR
             ? [Math.round(seconds / util_1.MINUTE), 'minute']
@@ -19,50 +29,60 @@ const defaultFormattter = function (then) {
                         ? [Math.round(seconds / util_1.WEEK), 'week']
                         : seconds < util_1.YEAR
                             ? [Math.round(seconds / util_1.MONTH), 'month']
-                            : [Math.round(seconds / util_1.YEAR), 'year'];
-    return { value, unit, suffix };
+                            : [Math.round(seconds / util_1.YEAR), 'year'], value = _a[0], unit = _a[1];
+    return { value: value, unit: unit, suffix: suffix };
 };
-const ɵ0 = defaultFormattter;
+var ɵ0 = defaultFormattter;
 exports.ɵ0 = ɵ0;
-class TimeagoFormatter {
-}
-exports.TimeagoFormatter = TimeagoFormatter;
-class TimeagoDefaultFormatter extends TimeagoFormatter {
-    format(then) {
-        const { suffix, value, unit } = defaultFormattter(then);
-        return this.parse(value, unit, suffix);
+var TimeagoFormatter = /** @class */ (function () {
+    function TimeagoFormatter() {
     }
-    parse(value, unit, suffix) {
+    return TimeagoFormatter;
+}());
+exports.TimeagoFormatter = TimeagoFormatter;
+var TimeagoDefaultFormatter = /** @class */ (function (_super) {
+    __extends(TimeagoDefaultFormatter, _super);
+    function TimeagoDefaultFormatter() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TimeagoDefaultFormatter.prototype.format = function (then) {
+        var _a = defaultFormattter(then), suffix = _a.suffix, value = _a.value, unit = _a.unit;
+        return this.parse(value, unit, suffix);
+    };
+    TimeagoDefaultFormatter.prototype.parse = function (value, unit, suffix) {
         if (value !== 1) {
             unit += 's';
         }
         return value + ' ' + unit + ' ' + suffix;
-    }
-}
-TimeagoDefaultFormatter.decorators = [
-    { type: core_1.Injectable },
-];
+    };
+    TimeagoDefaultFormatter.decorators = [
+        { type: core_1.Injectable },
+    ];
+    return TimeagoDefaultFormatter;
+}(TimeagoFormatter));
 exports.TimeagoDefaultFormatter = TimeagoDefaultFormatter;
-class TimeagoCustomFormatter extends TimeagoFormatter {
-    constructor(intl) {
-        super();
-        this.intl = intl;
+var TimeagoCustomFormatter = /** @class */ (function (_super) {
+    __extends(TimeagoCustomFormatter, _super);
+    function TimeagoCustomFormatter(intl) {
+        var _this = _super.call(this) || this;
+        _this.intl = intl;
+        return _this;
     }
-    format(then) {
-        const { suffix, value, unit } = defaultFormattter(then);
+    TimeagoCustomFormatter.prototype.format = function (then) {
+        var _a = defaultFormattter(then), suffix = _a.suffix, value = _a.value, unit = _a.unit;
         return this.parse(value, unit, suffix, Date.now(), then);
-    }
-    parse(value, unit, suffix, now, then) {
+    };
+    TimeagoCustomFormatter.prototype.parse = function (value, unit, suffix, now, then) {
         /** convert weeks to days if strings don't handle weeks */
         if (unit === 'week' && !this.intl.strings.week && !this.intl.strings.weeks) {
-            const days = Math.round(Math.abs(now - then) / (1000 * 60 * 60 * 24));
+            var days = Math.round(Math.abs(now - then) / (1000 * 60 * 60 * 24));
             value = days;
             unit = 'day';
         }
         /** create a normalize function for given value */
-        const normalize = this.normalizeFn(value, now - then, this.intl.strings.numbers);
+        var normalize = this.normalizeFn(value, now - then, this.intl.strings.numbers);
         /** The eventual return value stored in an array so that the wordSeparator can be used */
-        const dateString = [];
+        var dateString = [];
         /** handle prefixes */
         if (suffix === 'ago' && this.intl.strings.prefixAgo) {
             dateString.push(normalize(this.intl.strings.prefixAgo));
@@ -71,13 +91,13 @@ class TimeagoCustomFormatter extends TimeagoFormatter {
             dateString.push(normalize(this.intl.strings.prefixFromNow));
         }
         /** Handle Main number and unit */
-        const isPlural = value > 1;
+        var isPlural = value > 1;
         if (isPlural) {
-            const stringFn = this.intl.strings[unit + 's'] || this.intl.strings[unit] || '%d ' + unit;
+            var stringFn = this.intl.strings[unit + 's'] || this.intl.strings[unit] || '%d ' + unit;
             dateString.push(normalize(stringFn));
         }
         else {
-            const stringFn = this.intl.strings[unit] || this.intl.strings[unit + 's'] || '%d ' + unit;
+            var stringFn = this.intl.strings[unit] || this.intl.strings[unit + 's'] || '%d ' + unit;
             dateString.push(normalize(stringFn));
         }
         /** Handle Suffixes */
@@ -88,36 +108,56 @@ class TimeagoCustomFormatter extends TimeagoFormatter {
             dateString.push(normalize(this.intl.strings.suffixFromNow));
         }
         /** join the array into a string and return it */
-        const wordSeparator = typeof this.intl.strings.wordSeparator === 'string' ? this.intl.strings.wordSeparator : ' ';
+        var wordSeparator = typeof this.intl.strings.wordSeparator === 'string' ? this.intl.strings.wordSeparator : ' ';
         return dateString.join(wordSeparator);
-    }
+    };
+    /**
+     * If the numbers array is present, format numbers with it,
+     * otherwise just cast the number to a string and return it
+    */
     /**
        * If the numbers array is present, format numbers with it,
        * otherwise just cast the number to a string and return it
       */
-    normalizeNumber(numbers, value) {
+    TimeagoCustomFormatter.prototype.normalizeNumber = /**
+       * If the numbers array is present, format numbers with it,
+       * otherwise just cast the number to a string and return it
+      */
+    function (numbers, value) {
         return numbers && numbers.length === 10
             ? String(value).split('')
-                .map((digit) => digit.match(/^[0-9]$/) ? numbers[parseInt(digit, 10)] : digit)
+                .map(function (digit) { return digit.match(/^[0-9]$/) ? numbers[parseInt(digit, 10)] : digit; })
                 .join('')
             : String(value);
-    }
+    };
+    /**
+     * Take a string or a function that takes number of days and returns a string
+     * and provide a uniform API to create string parts
+    */
     /**
        * Take a string or a function that takes number of days and returns a string
        * and provide a uniform API to create string parts
       */
-    normalizeFn(value, millisDelta, numbers) {
-        return (stringOrFn) => typeof stringOrFn === 'function'
-            ? stringOrFn(value, millisDelta).replace(/%d/g, this.normalizeNumber(numbers, value))
-            : stringOrFn.replace(/%d/g, this.normalizeNumber(numbers, value));
-    }
-}
-TimeagoCustomFormatter.decorators = [
-    { type: core_1.Injectable },
-];
-/** @nocollapse */
-TimeagoCustomFormatter.ctorParameters = () => [
-    { type: timeago_intl_1.TimeagoIntl, },
-];
+    TimeagoCustomFormatter.prototype.normalizeFn = /**
+       * Take a string or a function that takes number of days and returns a string
+       * and provide a uniform API to create string parts
+      */
+    function (value, millisDelta, numbers) {
+        var _this = this;
+        return function (stringOrFn) {
+            return typeof stringOrFn === 'function'
+                ? stringOrFn(value, millisDelta).replace(/%d/g, _this.normalizeNumber(numbers, value))
+                : stringOrFn.replace(/%d/g, _this.normalizeNumber(numbers, value));
+        };
+    };
+    TimeagoCustomFormatter.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    TimeagoCustomFormatter.ctorParameters = function () { return [
+        { type: timeago_intl_1.TimeagoIntl, },
+    ]; };
+    return TimeagoCustomFormatter;
+}(TimeagoFormatter));
 exports.TimeagoCustomFormatter = TimeagoCustomFormatter;
 //# sourceMappingURL=timeago.formatter.js.map

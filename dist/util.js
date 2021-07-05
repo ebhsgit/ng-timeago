@@ -5,21 +5,21 @@ function isDefined(value) {
 }
 exports.isDefined = isDefined;
 function coerceBooleanProperty(value) {
-    return value != null && `${value}` !== 'false';
+    return value != null && "" + value !== 'false';
 }
 exports.coerceBooleanProperty = coerceBooleanProperty;
 function dateParser(date) {
-    const parsed = new Date(date);
+    var parsed = new Date(date);
     if (!Number.isNaN(parsed.valueOf())) {
         return parsed;
     }
-    const parts = String(date).match(/\d+/g);
+    var parts = String(date).match(/\d+/g);
     if (parts === null || parts.length <= 2) {
         return parsed;
     }
     else {
-        const [firstP, secondP, ...restPs] = parts.map(x => parseInt(x, 10));
-        return new Date(Date.UTC(firstP, secondP - 1, ...restPs));
+        var _a = parts.map(function (x) { return parseInt(x, 10); }), firstP = _a[0], secondP = _a[1], restPs = _a.slice(2);
+        return new Date(Date.UTC.apply(Date, [firstP, secondP - 1].concat(restPs)));
     }
 }
 exports.dateParser = dateParser;
