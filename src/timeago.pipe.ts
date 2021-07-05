@@ -1,10 +1,10 @@
-import { Injectable, OnDestroy, Pipe, PipeTransform, Optional, ChangeDetectorRef } from '@angular/core';
-import { Subscription, Subject } from 'rxjs';
-import { TimeagoClock } from './timeago.clock';
+import { ChangeDetectorRef, Injectable, OnDestroy, Optional, Pipe, PipeTransform } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { TickerOverride, TimeagoClock } from './timeago.clock';
 import { TimeagoFormatter } from './timeago.formatter';
 import { TimeagoIntl } from './timeago.intl';
-import { isDefined, coerceBooleanProperty, dateParser } from './util';
-import { filter } from 'rxjs/operators';
+import { coerceBooleanProperty, dateParser, isDefined } from './util';
 
 @Injectable()
 @Pipe({
@@ -40,12 +40,11 @@ export class TimeagoPipe implements PipeTransform, OnDestroy {
     });
   }
 
-  transform(date: any, ...args: any[]) {
+  transform(date: number, _live: boolean, tickerOverride: TickerOverride) {
     const _date = dateParser(date).valueOf();
-    let _live: boolean;
 
-    _live = isDefined(args[0])
-      ? coerceBooleanProperty(args[0])
+    _live = isDefined(_live)
+      ? coerceBooleanProperty(_live)
       : this.live;
 
     if (this.date === _date && this.live === _live) {
@@ -60,7 +59,7 @@ export class TimeagoPipe implements PipeTransform, OnDestroy {
         this.clockSubscription.unsubscribe();
         this.clockSubscription = undefined;
       }
-      this.clockSubscription = this.clock.tick(this.date)
+      this.clockSubscription = this.clock.tick(this.date, tickerOverride)
         .pipe(filter(() => this.live, this))
         .subscribe(() => this.stateChanges.next());
       this.stateChanges.next();
